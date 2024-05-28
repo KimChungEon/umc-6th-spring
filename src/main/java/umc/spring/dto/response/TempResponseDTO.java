@@ -1,4 +1,4 @@
-package umc.spring.dto;
+package umc.spring.dto.response;
 
 public class TempResponseDTO {
 }

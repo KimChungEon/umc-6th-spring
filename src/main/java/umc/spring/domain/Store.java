@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Builder @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Store extends BaseEntity {

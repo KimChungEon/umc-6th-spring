@@ -1,12 +1,15 @@
 package umc.spring.domain;
 
+import io.swagger.models.auth.In;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import umc.spring.domain.common.BaseEntity;
 import umc.spring.domain.mapping.MemberMission;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,7 +29,8 @@ public class Mission extends BaseEntity {
 
     private Integer reward;
 
-    private LocalDateTime deadline;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date deadline;
 
     private String missionSpec;
 
