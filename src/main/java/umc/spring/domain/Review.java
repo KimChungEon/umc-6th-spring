@@ -26,6 +26,7 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    private String title;
     private String body;
 
     private Float score;

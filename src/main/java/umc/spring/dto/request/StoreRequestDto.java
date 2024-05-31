@@ -30,6 +30,7 @@ public class StoreRequestDto {
     @AllArgsConstructor
     public static class ReviewRequestDto{
 
+        private String title;
         private String body;
         private Float score;
         private List<ReviewImage> reviewImages = new ArrayList<>();
@@ -45,5 +46,7 @@ public class StoreRequestDto {
         private Date deadline;
         private String mission_spec;
     }
+
+
 
 }

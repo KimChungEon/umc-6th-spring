@@ -2,7 +2,10 @@ package umc.spring.service;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.spring.converter.MissionConverter;
@@ -10,13 +13,16 @@ import umc.spring.converter.RegionConverter;
 import umc.spring.converter.ReviewConverter;
 import umc.spring.converter.StoreConverter;
 import umc.spring.domain.*;
+import umc.spring.domain.enums.MissionStatus;
+import umc.spring.domain.mapping.MemberMission;
 import umc.spring.dto.request.StoreRequestDto;
-import umc.spring.repository.MissionRepository;
-import umc.spring.repository.RegionRepository;
-import umc.spring.repository.ReviewRepository;
-import umc.spring.repository.StoreRepository;
+import umc.spring.repository.*;
 import umc.spring.validation.annotation.ExistStore;
 
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -26,7 +32,12 @@ public class StoreService {
     private final RegionRepository regionRepository;
     private final ReviewRepository reviewRepository;
     private final MissionRepository missionRepository;
+    private final MemberMissionRepository memberMissionRepository;
+    private final MemberRepository memberRepository;
 
+    /**
+     * 워크북 9주차
+     * */
     //미션 1. 특정 지역에 가게 추가하기 API
     public Long addStore(@Valid StoreRequestDto.NewStoreRequestDto storeRequestDto){
 
@@ -60,4 +71,29 @@ public class StoreService {
 
         return mission.getId();
     }
+
+    /**
+     * 워크북 10주차
+     * */
+    public Page<Review> getReviewList(Long StoreId, Integer page) {
+        Store store = storeRepository.findById(StoreId).orElseThrow();
+
+        Page<Review> StorePage = reviewRepository.findAllByStore(store, PageRequest.of(page-1, 10));
+
+        return StorePage;
+    }
+
+    public Optional<Store> findStore(Long id) {
+        return storeRepository.findById(id);
+    }
+
+    public Page<Mission> getMissionList(Long StoreId, Integer page) {
+        Store store = storeRepository.findById(StoreId).orElseThrow();
+
+        Page<Mission> missionPage = missionRepository.findAllByStore(store, PageRequest.of(page-1, 10));
+
+        return missionPage;
+    }
+
+
 }
