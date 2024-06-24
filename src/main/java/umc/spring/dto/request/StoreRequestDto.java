@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.stylesheets.LinkStyle;
 import umc.spring.domain.ReviewImage;
 
@@ -33,7 +34,7 @@ public class StoreRequestDto {
         private String title;
         private String body;
         private Float score;
-        private List<ReviewImage> reviewImages = new ArrayList<>();
+        //private MultipartFile reviewPicture;
     }
 
     @Getter

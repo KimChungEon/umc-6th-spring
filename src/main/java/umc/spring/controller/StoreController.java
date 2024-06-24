@@ -10,8 +10,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import umc.spring.apiPayload.ApiResponse;
 
+import umc.spring.apiPayload.code.status.SuccessStatus;
 import umc.spring.converter.MissionConverter;
 import umc.spring.converter.ReviewConverter;
 import umc.spring.dto.request.StoreRequestDto;
@@ -47,10 +49,11 @@ public class StoreController {
     @Parameters({
             @Parameter(name = "storeId", description = "가게의 아이디, path variable 입니다!")
     })
-    @PostMapping("/{storeId}/reviews")
+    @PostMapping(value = "/{storeId}/reviews", consumes = "multipart/form-data")
     public ApiResponse<Object> addReview(@ExistStore @PathVariable Long storeId,
-                                         @Valid @RequestBody StoreRequestDto.ReviewRequestDto request){
-        return ApiResponse.onSuccess(storeService.addReview(storeId, request));
+                                         @Valid @RequestPart StoreRequestDto.ReviewRequestDto request,
+                                         @RequestPart MultipartFile multipartFile){
+        return ApiResponse.onSuccess(storeService.addReview(storeId, request, multipartFile));
     }
 
     @Operation(summary = "특정 가게에 미션 추가 API",description = "특정 가게에 미션 추가")
@@ -97,6 +100,18 @@ public class StoreController {
     public ApiResponse<StoreResponseDto.MissionPreViewListDTO> getMissionList(@ExistStore @PathVariable(name = "storeId") Long storeId, @CheckPage @RequestParam(name = "page") Integer page){
 
         return ApiResponse.onSuccess(MissionConverter.missionPreViewListDTO(storeService.getMissionList(storeId,page)));
+    }
+
+    @DeleteMapping("/review-image/{reviewImageId}")
+    @Operation(summary = "리뷰 이미지 삭제",description = "리뷰 이미지 삭제")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+    })
+    public ApiResponse<SuccessStatus> deleteReviewImage(@PathVariable Long reviewImageId){
+
+        storeService.deleteReviewImage(reviewImageId);
+
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
 }

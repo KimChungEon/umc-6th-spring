@@ -3,6 +3,7 @@ package umc.spring.converter;
 import org.springframework.data.domain.Page;
 import umc.spring.domain.Mission;
 import umc.spring.domain.Review;
+import umc.spring.domain.ReviewImage;
 import umc.spring.domain.Store;
 import umc.spring.dto.request.StoreRequestDto;
 import umc.spring.dto.response.StoreResponseDto;
@@ -17,11 +18,18 @@ public class ReviewConverter {
                 .body(request.getBody())
                 //.member(member)
                 .score(request.getScore())
-                .reviewImageList(request.getReviewImages())
                 .title(request.getTitle())
                 .store(store)
                 .build();
     }
+
+    public static ReviewImage toReviewImage(String pictureUrl, Review review) {
+        return ReviewImage.builder()
+                .review(review)
+                .image_url(pictureUrl)
+                .build();
+    }
+
     public static StoreResponseDto.ReviewPreViewDTO reviewPreViewDTO(Review review){
         return StoreResponseDto.ReviewPreViewDTO.builder()
                 .ownerNickname(review.getMember().getName())
@@ -44,6 +52,7 @@ public class ReviewConverter {
                 .reviewList(reviewPreViewDTOList)
                 .build();
     }
+
 
 
 }
